@@ -9,3 +9,7 @@ Linux: https://redis.io/topics/quickstart
 
 Windows: https://github.com/ServiceStack/redis-windows
 
+
+
+
+use npm run dev and also npm run dev-client to start it
