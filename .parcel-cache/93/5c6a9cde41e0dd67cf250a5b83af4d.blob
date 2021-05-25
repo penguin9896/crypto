@@ -1,0 +1,43 @@
+var helpers = require("../../node_modules/@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+var prevRefreshReg = window.$RefreshReg$;
+var prevRefreshSig = window.$RefreshSig$;
+helpers.prelude(module);
+try {
+  var _react = require('react');
+  var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+  var _reactDefault = _parcelHelpers.interopDefault(_react);
+  var _reactDom = require('react-dom');
+  var _reactRouterDom = require('react-router-dom');
+  var _history = require('./history');
+  var _historyDefault = _parcelHelpers.interopDefault(_history);
+  var _componentsApp = require('./components/App');
+  var _componentsAppDefault = _parcelHelpers.interopDefault(_componentsApp);
+  var _componentsBlocks = require('./components/Blocks');
+  var _componentsBlocksDefault = _parcelHelpers.interopDefault(_componentsBlocks);
+  var _componentsConductTransaction = require('./components/ConductTransaction');
+  var _componentsConductTransactionDefault = _parcelHelpers.interopDefault(_componentsConductTransaction);
+  var _componentsTransactionPool = require('./components/TransactionPool');
+  var _componentsTransactionPoolDefault = _parcelHelpers.interopDefault(_componentsTransactionPool);
+  require('./index.css');
+  require('./components/Transaction');
+  _reactDom.render(/*#__PURE__*/_reactDefault.default.createElement(_reactRouterDom.Router, {
+    history: _historyDefault.default
+  }, /*#__PURE__*/_reactDefault.default.createElement(_reactRouterDom.Switch, null, /*#__PURE__*/_reactDefault.default.createElement(_reactRouterDom.Route, {
+    exact: true,
+    path: "/",
+    component: _componentsAppDefault.default
+  }), /*#__PURE__*/_reactDefault.default.createElement(_reactRouterDom.Route, {
+    path: "/blocks",
+    component: _componentsBlocksDefault.default
+  }, "     "), /*#__PURE__*/_reactDefault.default.createElement(_reactRouterDom.Route, {
+    path: "/conduct-transaction",
+    component: _componentsConductTransactionDefault.default
+  }, " "), /*#__PURE__*/_reactDefault.default.createElement(_reactRouterDom.Route, {
+    path: "/transaction-pool",
+    component: _componentsTransactionPoolDefault.default
+  }, " "))), document.getElementById('root'));
+  helpers.postlude(module);
+} finally {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}

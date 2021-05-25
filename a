@@ -1,0 +1,146 @@
+const TransactionPool = require('./wallet/transaction-pool');
+const TransactionPool = require('./wallet/transaction-pool');
+const Wallet = require ('./wallet');
+
+
+app.post('/api/transact', (req, res) =>{
+    const {amount, recipient} = req.body;
+
+    const transaction = wallet. createTransaction({recipient, amount});
+
+    TransactionPool.setTransaction(transaction);
+
+
+    console.log('transactionPool', transactionPool);
+
+
+        res.json({transaction});
+
+
+        
+
+});
+
+
+
+
+const TransactionPool = new TransactionPool();
+const wallet = new Wallet();
+
+
+//"parcel": "^2.0.0-beta.2"
+
+
+
+
+
+
+<!doctype html><html>
+    <head>
+
+    </head>
+    <body> Welcome to the Cryptochain... <div id="root">
+
+    </div> 
+     
+    <script src="index.js"> </script>
+     </body>
+     </html>
+
+
+
+     
+    ConductTransaction = () => {
+        const {recipient, amount} = this.state;
+
+
+        fetch('http://localhost:3000/api/transact', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({recipient, amount})
+
+
+        }).then(response => response.json())
+        .then(json => { alert(json.message || json.type)});
+    }
+
+
+
+  <div>  <Link to ='/transaction-pool'> Transaction Pool</Link>   </div>
+
+<Route path = '/transaction-pool' component={TransactionPool}> </Route>
+
+
+
+  state = { transactionPoolMap: {} };
+
+
+
+    fetchTransactionPoolMap = () =>{
+
+        fetch('http://localhost:3000/api/transaction-pool-map')
+        .then( response => response.json())
+        .then(json => this.setState({ transactionPoolMap: json}));
+
+    }
+
+
+
+    componentDidMount(){
+        this.fetchTransactionPoolMap();
+
+
+    }
+
+
+    render(){
+        return (
+
+            <div className = 'TransactionPool'>
+                <div><Link to ='/'> Home </Link> </div>
+            <h3>    Transaction Pool </h3>
+            {
+
+                Object.values(this.state.transactionPoolMap).map(transaction => {
+                    return (
+                        <div key={transaction.id}>
+                            <hr/>
+                            <Transaction transaction={transaction} />
+
+                             </div>
+                    )
+
+                })
+            }
+
+            </div>
+        )
+
+
+    }
+
+
+    
+    fetchMineTransactions = () =>{
+        fetch(`${document.location.origin}/api/mine-transactions`)
+            .then(respone => {
+                if(response.status === 200){
+                    alert('success');
+                    history.push('./blocks');
+                }else {
+                    alert('the mine-transaction block request did not complete.');
+                }
+
+            });
+
+    }
+
+
+      <Button
+            bsStyle ="danger"
+            onclick={this.fetchMineTransactions}
+            
+            >
+
+            Mine a transaction
+            </Button>

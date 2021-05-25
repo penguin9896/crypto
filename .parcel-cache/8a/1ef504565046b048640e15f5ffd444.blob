@@ -1,0 +1,5 @@
+var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+_parcelHelpers.defineInteropFlag(exports);
+var _historyCreateBrowserHistory = require('history/createBrowserHistory');
+var _historyCreateBrowserHistoryDefault = _parcelHelpers.interopDefault(_historyCreateBrowserHistory);
+exports.default = _historyCreateBrowserHistoryDefault.default();
