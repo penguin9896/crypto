@@ -6,7 +6,18 @@ import history from '../history';
 
 
 class ConductTransaction extends Component {
-    state = {recipient: '', amount: 0};
+   // state = {recipient: '', amount: 0, knownAdresses:{} };
+    state = {recipient: '', amount: 0 };
+
+
+    
+/*
+    componentDidMount() {
+        fetch(`${document.location.origin}/api/known-addresses`)
+          .then(response => response.json())
+          .then(json => this.setState({ knownAddresses: json }));
+      }
+*/
 
 
 
