@@ -1,0 +1,74 @@
+var helpers = require("../../../node_modules/@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+var prevRefreshReg = window.$RefreshReg$;
+var prevRefreshSig = window.$RefreshSig$;
+helpers.prelude(module);
+try {
+  var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+  _parcelHelpers.defineInteropFlag(exports);
+  var _react = require('react');
+  var _reactDefault = _parcelHelpers.interopDefault(_react);
+  var _reactBootstrap = require('react-bootstrap');
+  var _reactRouterDom = require('react-router-dom');
+  var _history = require('../history');
+  var _historyDefault = _parcelHelpers.interopDefault(_history);
+  class ConductTransaction extends _react.Component {
+    state = {
+      recipient: '',
+      amount: 0
+    };
+    updateRecipient = event => {
+      this.setState({
+        recipient: event.target.value
+      });
+    };
+    updateAmount = event => {
+      this.setState({
+        amount: Number(event.target.value)
+      });
+    };
+    conductTransaction = () => {
+      const {recipient, amount} = this.state;
+      fetch(`${document.location.origin}/api/transact`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          recipient,
+          amount
+        })
+      }).then(response => response.json()).then(json => {
+        alert(json.message || json.type);
+        _historyDefault.default.push('/transaction-pool');
+      });
+    };
+    render() {
+      console.log('this.state', this.state);
+      return (
+        /*#__PURE__*/_reactDefault.default.createElement("div", {
+          className: "ConductTransaction"
+        }, /*#__PURE__*/_reactDefault.default.createElement(_reactRouterDom.Link, {
+          to: "/"
+        }, " Home "), /*#__PURE__*/_reactDefault.default.createElement("h3", null, "Conduct a Transaction "), /*#__PURE__*/_reactDefault.default.createElement(_reactBootstrap.FormGroup, null, /*#__PURE__*/_reactDefault.default.createElement(_reactBootstrap.FormControl, {
+          input: "text",
+          placeholder: "recipient",
+          value: this.state.recipient,
+          onChange: this.updateRecipient
+        })), /*#__PURE__*/_reactDefault.default.createElement(_reactBootstrap.FormGroup, null, /*#__PURE__*/_reactDefault.default.createElement(_reactBootstrap.FormControl, {
+          input: "number",
+          placeholder: "amount",
+          value: this.state.amount,
+          onChange: this.updateAmount
+        }), /*#__PURE__*/_reactDefault.default.createElement("div", null, /*#__PURE__*/_reactDefault.default.createElement(_reactBootstrap.Button, {
+          bsStyle: "danger",
+          onClick: this.conductTransaction
+        }, "Submit"))))
+      );
+    }
+  }
+  exports.default = ConductTransaction;
+  helpers.postlude(module);
+} finally {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}

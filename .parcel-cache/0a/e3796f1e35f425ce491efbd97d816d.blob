@@ -1,0 +1,29 @@
+var helpers = require("../../../node_modules/@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+var prevRefreshReg = window.$RefreshReg$;
+var prevRefreshSig = window.$RefreshSig$;
+helpers.prelude(module);
+try {
+  var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+  _parcelHelpers.defineInteropFlag(exports);
+  var _react = require('react');
+  var _reactDefault = _parcelHelpers.interopDefault(_react);
+  const Transaction = ({transaction}) => {
+    const {input, outputMap} = transaction;
+    const recipients = Object.keys(outputMap);
+    return (
+      /*#__PURE__*/_reactDefault.default.createElement("div", {
+        className: "Transaction"
+      }, /*#__PURE__*/_reactDefault.default.createElement("div", null, "From: ", `${input.address.substring(0, 20)}...`, " | Balance: ", input.amount), recipients.map(recipient => /*#__PURE__*/_reactDefault.default.createElement("div", {
+        key: recipient
+      }, "To: ", `${recipient.substring(0, 20)}...`, " | Sent : ", outputMap[recipient])))
+    );
+  };
+  _c = Transaction;
+  exports.default = Transaction;
+  var _c;
+  $RefreshReg$(_c, "Transaction");
+  helpers.postlude(module);
+} finally {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}

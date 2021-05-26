@@ -1,0 +1,65 @@
+var helpers = require("../../../node_modules/@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+var prevRefreshReg = window.$RefreshReg$;
+var prevRefreshSig = window.$RefreshSig$;
+helpers.prelude(module);
+try {
+  var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+  _parcelHelpers.defineInteropFlag(exports);
+  var _react = require('react');
+  var _reactDefault = _parcelHelpers.interopDefault(_react);
+  require('react-dom');
+  var _reactBootstrap = require('react-bootstrap');
+  var _Transaction = require('./Transaction');
+  var _TransactionDefault = _parcelHelpers.interopDefault(_Transaction);
+  class Block extends _react.Component {
+    state = {
+      displayTransaction: false
+    };
+    toggleTransaction = () => {
+      this.setState({
+        displayTransaction: !this.state.displayTransaction
+      });
+    };
+    get displayTransaction() {
+      const {data} = this.props.block;
+      const stringifiedData = JSON.stringify(data);
+      const dataDisplay = stringifiedData.length > 35 ? `${stringifiedData.substring(0, 35)}...` : stringifiedData;
+      if (this.state.displayTransaction) {
+        return (
+          /*#__PURE__*/_reactDefault.default.createElement("div", null, data.map(transaction => /*#__PURE__*/_reactDefault.default.createElement("div", {
+            key: transaction.id
+          }, /*#__PURE__*/_reactDefault.default.createElement("hr", null), /*#__PURE__*/_reactDefault.default.createElement(_TransactionDefault.default, {
+            transaction: transaction
+          }))), /*#__PURE__*/_reactDefault.default.createElement("br", null), /*#__PURE__*/_reactDefault.default.createElement("div", null, /*#__PURE__*/_reactDefault.default.createElement(_reactBootstrap.Button, {
+            bsStyle: "danger",
+            bsSize: "small",
+            onClick: this.toggleTransaction
+          }, "Show Less")))
+        );
+      }
+      return (
+        /*#__PURE__*/_reactDefault.default.createElement("div", null, /*#__PURE__*/_reactDefault.default.createElement("div", null, "data :", dataDisplay, /*#__PURE__*/_reactDefault.default.createElement(_reactBootstrap.Button, {
+          bsStyle: "danger",
+          bsSize: "small",
+          onClick: this.toggleTransaction
+        }, "Show more")))
+      );
+    }
+    render() {
+      console.log('this.displayTransaction', this.displayTransaction);
+      const {timestamp, hash} = this.props.block;
+      const hashDisplay = `${hash.substring(0, 15)}...`;
+      return (
+        /*#__PURE__*/_reactDefault.default.createElement("div", {
+          className: "Blocks"
+        }, /*#__PURE__*/_reactDefault.default.createElement("div", null, "Hash: ", hashDisplay), /*#__PURE__*/_reactDefault.default.createElement("div", null, "TimeStamp: ", new Date(timestamp).toLocaleString(), " "), this.displayTransaction)
+      );
+    }
+  }
+  ;
+  exports.default = Block;
+  helpers.postlude(module);
+} finally {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}
