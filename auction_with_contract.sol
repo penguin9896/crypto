@@ -12,6 +12,8 @@ contract AuctionCreator{
     uint public v=0;
     string public nm ="asd";
  
+    address public owner;
+    address public add;
     
     // receive() payable external{
                 
@@ -27,12 +29,21 @@ contract AuctionCreator{
         
     }
     
+    constructor(){
+    owner = msg.sender;
+        
+    createAuction();    
+    }
+    
+    
+    
     // declaring the function that will deploy contract Auction
     function createAuction() public {
         numberofcontracts++;
         // passing msg.sender to the constructor of Auction 
-       // Auction newAuction = new Auction(payable(msg.sender)); 
-    //    auctions.push(newAuction); // adding the address of the instance to the dynamic array
+        Auction newAuction = new Auction(payable(msg.sender));
+        
+       auctions.push(newAuction); // adding the address of the instance to the dynamic array
 //        return(newAuction);
         
     }
@@ -64,6 +75,7 @@ contract Auction{
     uint public highestBindingBid;
      
      int public inc;
+    
     
     address payable public highestBidder;
     mapping(address => uint) public bids;
@@ -168,9 +180,9 @@ contract Auction{
        inc++;
        
         // to place a bid auction should be running
-        require(auctionState == State.Running);
+        require(auctionState == State.Running, "auctionState has Ended and you are not the winner");
         // minimum value allowed to be sent
-         require(msg.value > 0.0001 ether);
+         require(msg.value > 0.0001 ether, "not enough ether sent must be > 0.0001 ether");
         
         
         uint currentBid = bids[msg.sender] + msg.value;
