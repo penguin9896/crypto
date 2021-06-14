@@ -1,6 +1,29 @@
 const Web3 = require('web3');
 const Tx = require('ethereumjs-tx').Transaction;
 const rpcUrl = "https://rinkeby.infura.io/v3/d1fdd8caeb5248ec83f1413e78e546f1";
+const bodyParser = require('body-parser');
+const express = require('express');
+const request = require('request');
+const path = require('path');
+
+const app = express();
+
+const DEFAULT_PORT = 3001;
+const ROOT_NODE_ADDRESS = `http://localhost:${DEFAULT_PORT}`;
+
+
+
+app.use(express.json());
+
+app.use(express.static(path.join(__dirname, './dist')));
+
+app.get('/api/eth', (req,res) =>{
+    res.json({ AuctionCreatorAddress, AuctionAddress, Owner, hasFinished});
+    
+    
+    });
+    
+
 
 
 const web3 = new Web3(rpcUrl);
@@ -14,20 +37,15 @@ web3.eth.accounts.wallet.add({
   //  web3.eth.accounts.wallet);
 /*
 const account = "0x45F4ad5A77aAA7258c8045F9E006BABd70Aa8366";
-
 web3.eth.getBalance(account, (err, wei) => {
     balance = web3.utils.fromWei(wei, 'ether')
     console.log(balance);
 });
-
 const abi =[ { "inputs": [ { "internalType": "address payable", "name": "eoa", "type": "address" } ], "stateMutability": "nonpayable", "type": "constructor" }, { "anonymous": false, "inputs": [ { "indexed": false, "internalType": "address", "name": "", "type": "address" }, { "indexed": false, "internalType": "string", "name": "", "type": "string" } ], "name": "winnerevent", "type": "event" }, { "inputs": [], "name": "auctionState", "outputs": [ { "internalType": "enum Auction.State", "name": "", "type": "uint8" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "", "type": "address" } ], "name": "bids", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "cancelAuction", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "endBlock", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "finalizeAuction", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "flag", "outputs": [ { "internalType": "bool", "name": "", "type": "bool" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "highestBidder", "outputs": [ { "internalType": "address payable", "name": "", "type": "address" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "highestBindingBid", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "inc", "outputs": [ { "internalType": "int256", "name": "", "type": "int256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "ipfsHash", "outputs": [ { "internalType": "string", "name": "", "type": "string" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "length", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "name": "mapl", "outputs": [ { "internalType": "address", "name": "", "type": "address" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "owner", "outputs": [ { "internalType": "address payable", "name": "", "type": "address" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "placeBid", "outputs": [ { "internalType": "bool", "name": "", "type": "bool" } ], "stateMutability": "payable", "type": "function" }, { "inputs": [], "name": "startBlock", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "stateMutability": "payable", "type": "receive" } ];
 //contract address
 const address = "0x7993267fff0B6c0885BccBC58d803750D539252b";
-
 const contract = new web3.eth.Contract(abi, address);
-
 //contract.methods.createAuction().send();
-
 */
 //console.log(web3.eth.accounts[0]);
 
@@ -64,11 +82,16 @@ let myContract = new web3.eth.Contract( ContractABI, {
 
 let auctioncontract;
 
-let helloInstance;
 
-let auctionadd;
+
+let AuctionAddress = "";
 
 let bool = true; 
+
+let Owner = "";
+
+let AuctionCreatorAddress="";
+let hasFinished = false;
 
 
 myContract.deploy({
@@ -78,21 +101,15 @@ myContract.deploy({
     gas: 4700000
 }).then((instance) => { 
     console.log("Contract mined at " + instance.options.address);
-    helloInstance = instance.options.address; 
-    auctioncreator = instance;
-   // console.log(instance.options.address)
+    AuctionCreatorAddress = instance.options.address; 
 
-
-   instance.methods.auctions(0).call({from:'0x74Ab49E03013C7dCa945f794eFdA13BE3Dee364C'},(err, result) => {console.log("contract address  is ", result) ; auctionadd = result; console.log(auctionadd); bool = false;
- }).then(() => {console.log( "the hex is ", auctionadd)
-
- 
-}).then(() => {
-    auctioncontract =  new web3.eth.Contract( contractAuctionABI, auctionadd);
-    auctioncontract.methods.owner().call({from:'0x74Ab49E03013C7dCa945f794eFdA13BE3Dee364C'},(err, result) => { console.log( "Owner is  " , result) });
+   instance.methods.auctions(0).call({from:'0x74Ab49E03013C7dCa945f794eFdA13BE3Dee364C'},(err, result) => {console.log("contract address  is ", result) ; AuctionAddress = result; 
+ }).then(() => {
+    auctioncontract =  new web3.eth.Contract( contractAuctionABI, AuctionAddress);
+    auctioncontract.methods.owner().call({from:'0x74Ab49E03013C7dCa945f794eFdA13BE3Dee364C'},(err, result) => { console.log( "Owner is  " , Owner = result); hasFinished=true;  });
 })
     
-//auctionaddd = Buffer.from(auctionadd, 'hex');
+//AuctionAddressd = Buffer.from(AuctionAddress, 'hex');
 
 
 
@@ -107,18 +124,28 @@ myContract.deploy({
     
 
 
-  //  instance.methods.auctions(0).call({from:'0x74Ab49E03013C7dCa945f794eFdA13BE3Dee364C'},(err, result) => { auctionadd = result; console.log("contract address  is ", result) });
-//    console.log(auctionaddd);
-    //auctioncontract =  new web3.eth.Contract( contractAuctionABI, auctionadd);
+  //  instance.methods.auctions(0).call({from:'0x74Ab49E03013C7dCa945f794eFdA13BE3Dee364C'},(err, result) => { AuctionAddress = result; console.log("contract address  is ", result) });
+//    console.log(AuctionAddressd);
+    //auctioncontract =  new web3.eth.Contract( contractAuctionABI, AuctionAddress);
 
    // let auctioncreator = new web3.eth.Contract( ContractABI, helloInstance);
     //auctioncontract.methods.owner().call({from:'0x74Ab49E03013C7dCa945f794eFdA13BE3Dee364C'},(err, result) => { console.log( "Owner is  " , result) });
 
 });
 
+
+
+
+app.listen(DEFAULT_PORT, () => {
+    
+    console.log(`listening at localhost: ${DEFAULT_PORT}`)
+
+    //so the default port doesnt syn with itself
+    
+});
 //console.log("the string type is ",typeof(helloInstance));
 
-// let auctionadd = Buffer.from(helloInstance, 'hex');
+// let AuctionAddress = Buffer.from(helloInstance, 'hex');
 
 
 //privatek = Buffer.from('c293ca01402b498cf37e541123cb2057fd88fa3963347ab050a6066a92342097', 'hex');
@@ -127,21 +154,16 @@ myContract.deploy({
 
 /*
 privatek = Buffer.from('4278b9f4c1a096f23336cef0c54b84bf8ec381504568ed11a73c3a07aa8b2db9', 'hex');
-
 const account1 = "0x74Ab49E03013C7dCa945f794eFdA13BE3Dee364C";
-
 web3.eth.getBalance(account1, (err, wei) => {
     balance = web3.utils.fromWei(wei, 'ether')
     console.log(balance);
 });
-
-
 //build transaction
 web3.eth.getTransactionCount(account1, (err, txCount) =>{
 //smart contract data
  
 const data = '';
-
 const txObject = {
         nonce: web3.utils.toHex(txCount) ,
      //   to: contractAddress,
@@ -150,38 +172,23 @@ const txObject = {
         gasPrice: web3.utils.toHex(web3.utils.toWei('10','gwei')) ,
         data: data
     }
-
-
     console.log(txObject);
-
     
 const tx = new Tx(txObject, {chain:'rinkeby'});
-
 tx.sign(privatek);
-
-
 const serializedTransaction = tx.serialize();
 const raw = '0x' + serializedTransaction.toString('Hex');
-
 //broadcast transaction
 web3.eth.sendSignedTransaction(raw,(err,txHash)=>{
     console.log('err : ',err,'txHash : ',txHash)
     //use this hash to find smartcontract on etherscan
     }).on('receipt ', console.log,);
     
-
-
-
-
 // web3.eth.getBalance(account1, (err, wei) => {
 //     balance = web3.utils.fromWei(wei, 'ether')
 //     console.log(balance);
 // });
-
-
-
 });
-
 */
 
  //let send = web3.eth.sendTransaction({from:privatekk, to:"0xD0762510d4D90BcE826CB22c66FBC974d9Aa3Ce2", value:web3.utils.toWei('10','gwei')});
@@ -192,7 +199,3 @@ web3.eth.sendSignedTransaction(raw,(err,txHash)=>{
 
 
 // Sign the transaction
-
-
-
-
